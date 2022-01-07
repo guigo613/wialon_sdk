@@ -1,6 +1,6 @@
 use super::external::*;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
 #[repr(transparent)]
 pub struct Units(u32);
 
