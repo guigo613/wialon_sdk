@@ -99,6 +99,12 @@ impl Wialon {
     }
 }
 
+impl Drop for Wialon {
+    fn drop(&mut self) {
+        let _ = self.disconnect();
+    }
+}
+
 pub struct BuilderWialon<'a> {
     response_type: &'a str,
     wialon_sdk_url: &'a str,
