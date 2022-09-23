@@ -1,3 +1,7 @@
+use std::io::{
+    Error as IoError,
+    ErrorKind
+};
 use super::{
     external::DeserializeOwned,
     *
@@ -207,7 +211,7 @@ impl<'a> BuilderWialon<'a> {
         let response = client.post(OAUTH.replace("<user>", self.login))
             .form(&params).send()?;
 
-        let token = response.url().query_pairs().find(|x| { x.0 == "access_token" }).unwrap().1;
+        let token = response.url().query_pairs().find(|x| { x.0 == "access_token" }).ok_or(IoError::from(ErrorKind::InvalidData))?.1;
 
         Ok(Wialon {
             user: self.login.into(),
