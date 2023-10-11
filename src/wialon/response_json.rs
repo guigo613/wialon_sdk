@@ -103,7 +103,7 @@ pub struct Evts {
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct AvlEvts {
-	pub tm: u32,                                        // server time
+	pub tm: Option<u32>,                                        // server time
 	pub events: Vec<Evts>                               // events
 }
 
@@ -119,9 +119,7 @@ pub struct Error {
 
 impl Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Error: {}", self.error);
-
-        Ok(())
+        write!(f, "Error: {}", self.error)
     }
 }
 

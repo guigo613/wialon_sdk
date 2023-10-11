@@ -91,6 +91,8 @@ impl Wialon {
             Err(Error { error: 1 })?
         };
 
+        // dbg!(&response);
+
         Self::_deseliarize(&response)
     }
 
@@ -133,7 +135,7 @@ impl<'a> BuilderWialon<'a> {
             redirect_uri:    "http://hosting.wialon.com/login.html",
             access_type:     "-1",
             activation_time: "0",
-            duration:        "100",
+            duration:        "86400",
             flags:           "0",
             login:           user,
             passw:           pass
@@ -190,8 +192,11 @@ impl<'a> BuilderWialon<'a> {
         let body = get.text()?;
         let client = reqwest::Client::new();
 
-        let re = Regex::new(r#"<input(\s+type="\S*?"|\s+name="sign"){2}\s+value="(?P<sign>\S+)">"#)?;
-        let sign = re.captures(&body).unwrap();
+        // let re = Regex::new(r#"<input(\s+type="\S*?"|\s+name="sign"){2}\s+value="(?P<sign>\S+)">"#)?;
+        let re = Regex::new(r#"o.sign="(?P<sign>\S+)";"#)?;
+        let Some(sign) = re.captures(&body) else {
+            panic!("{}", body);
+        };
 
         let params = [
             ("response_type",   self.response_type),
@@ -211,7 +216,11 @@ impl<'a> BuilderWialon<'a> {
         let response = client.post(OAUTH.replace("<user>", self.login))
             .form(&params).send()?;
 
-        let token = response.url().query_pairs().find(|x| { x.0 == "access_token" }).ok_or(IoError::from(ErrorKind::InvalidData))?.1;
+        dbg!(&response.status());
+        
+        let token = response.url().query_pairs().find(|x| { dbg!(&x.0); x.0 == "access_token" }).ok_or(IoError::from(ErrorKind::InvalidData))?.1;
+
+        dbg!(&token);
 
         Ok(Wialon {
             user: self.login.into(),

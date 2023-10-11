@@ -1,5 +1,5 @@
-pub const LOGIN: &str = "http://hosting.wialon.com/login.html?user=<user>&duration=100";
-pub const OAUTH: &str = "http://hosting.wialon.com/oauth.html?user=<user>";
+pub const LOGIN: &str = "http://hosting.wialon.com/login.html?user=<user>&duration=86400";
+pub const OAUTH: &str = "https://hst-api.wialon.com/oauth/authorize.html?user=<user>&duration=86400"; // "http://hosting.wialon.com/oauth.html?user=<user>";
 
 pub const URL: &str = "http://hst-api.wialon.com/wialon/ajax.html";
 pub const AVL: &str = "http://hst-api.wialon.com/avl_evts";
